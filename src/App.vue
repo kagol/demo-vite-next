@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import { useNext } from './composables/use-next'
-useNext()
+import { TinyRemoter } from '@opentiny/next-remoter'
+import '@opentiny/next-remoter/dist/style.css'
+
+const sessionId = 'd299a869-c674-4125-a84b-bb4e24079b99'
+const { loadingSessionId } = useNext({ sessionId })
 </script>
 
 <template>
@@ -14,6 +18,11 @@ useNext()
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
+  <tiny-remoter
+    agent-root="http://localhost:3000/api/v1/webmcp/"
+    :session-id="sessionId"
+    v-if="loadingSessionId"
+  />
 </template>
 
 <style scoped>

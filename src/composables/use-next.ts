@@ -1,7 +1,9 @@
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { WebMcpServer, createMessageChannelPairTransport, z, WebMcpClient } from '@opentiny/next-sdk'
 
-export function useNext() {
+export function useNext({ sessionId }) {
+  const loadingSessionId = ref(false)
+
   onMounted(async () => {
     // 第二步：创建 WebMcpServer ，并与 ServerTransport 连接
     const [serverTransport, clientTransport] = createMessageChannelPairTransport()
@@ -26,11 +28,16 @@ export function useNext() {
     // 第三步：创建 WebMcpClient ，并与 WebAgent 连接
     const client = new WebMcpClient()
     await client.connect(clientTransport)
-    const { sessionId } = await client.connect({
+    const { sessionId: sessionID } = await client.connect({
       agent: true,
-      sessionId: 'd299a869-c674-4125-a84b-bb4e24079b99',
+      sessionId,
       url: 'http://localhost:3000/api/v1/webmcp/mcp' // https://agent.opentiny.design/api/v1/webmcp-trial/mcp
     })
-    console.log('sessionId', sessionId)
+    loadingSessionId.value = true
+    console.log('sessionID', sessionID)
   })
+
+  return {
+    loadingSessionId
+  }
 }
