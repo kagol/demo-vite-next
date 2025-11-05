@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
+import { useNext } from './composables/use-next'
+useNext()
 </script>
 
 <template>
