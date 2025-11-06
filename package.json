@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@opentiny/next-remoter": "^0.0.3",
+    "@opentiny/next-sdk": "^0.1.10",
     "axios": "^1.10.0",
     "vue": "^3.5.17"
   },
@@ -18,5 +20,10 @@
     "typescript": "~5.8.3",
     "vite": "^7.0.3",
     "vue-tsc": "^2.2.12"
+  },
+  "pnpm": {
+    "overrides": {
+      "@opentiny/next-sdk>ai": "5.0.28"
+    }
   }
 }
