@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import { useNext } from './composables/use-next'
 import { TinyRemoter } from '@opentiny/next-remoter'
 import '@opentiny/next-remoter/dist/style.css'
 
-const { sessionId } = useNext()
+const numberValue = ref(0)
+const { sessionId, visible } = useNext({ numberValue })
 </script>
 
 <template>
@@ -16,10 +18,12 @@ const { sessionId } = useNext()
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld msg="Vite + Vue" v-model:count="numberValue" />
+  <p>当前数字：{{ numberValue }}</p>
   <tiny-remoter
     agent-root="http://localhost:3000/api/v1/webmcp/"
     :session-id="sessionId"
+    v-model:show="visible"
   />
 </template>
 

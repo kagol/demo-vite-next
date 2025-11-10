@@ -1,8 +1,15 @@
 import { onMounted, ref } from 'vue'
-import { WebMcpServer, createMessageChannelPairTransport, z, WebMcpClient } from '@opentiny/next-sdk'
+import {
+  WebMcpServer,
+  WebMcpClient,
+  createMessageChannelPairTransport,
+  createRemoter,
+  z,
+} from '@opentiny/next-sdk'
 
-export function useNext() {
+export function useNext({ numberValue }) {
   const sessionId = ref('')
+  const visible = ref(false)
 
   onMounted(async () => {
     // 第二步：创建 WebMcpServer ，并与 ServerTransport 连接
@@ -11,15 +18,16 @@ export function useNext() {
     const server = new WebMcpServer()
 
     server.registerTool(
-      'demo-tool',
+      'counter',
       {
-        title: '演示工具',
-        description: '一个简单工具',
-        inputSchema: { foo: z.string() }
+        title: '自增一个数字',
+        description: '在现有的数字基础上，自增一个数字',
+        inputSchema: { number: z.number() }
       },
-      async (params) => {
-        console.log('params:', params)
-        return { content: [{ type: 'text', text: `收到: ${params.foo}` }] }
+      async ({ number }) => {
+        console.log('number:', number)
+        numberValue.value += number
+        return { content: [{ type: 'text', text: `收到: ${number}` }] }
       }
     )
 
@@ -34,9 +42,32 @@ export function useNext() {
     })
     sessionId.value = sessionID
     console.log('sessionId:', sessionId.value)
+
+    // const remoter = createRemoter({
+    //   sessionId: sessionId.value,
+    //   onShowAIChat: () => {
+    //     console.log('显示AI对话框')
+    //     visible.value = !visible.value
+    //   },
+    //   menuItems: [
+    //     {
+    //       action: 'qr-code',
+    //       show: false
+    //     },
+    //     {
+    //       action: 'remote-control',
+    //       show: false
+    //     },
+    //     {
+    //       action: 'remote-url',
+    //       show: false
+    //     }
+    //   ]
+    // })
   })
 
   return {
     sessionId,
+    visible,
   }
 }

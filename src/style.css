@@ -77,3 +77,9 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.tiny-remoter-dropdown-item[data-action="qr-code"],
+.tiny-remoter-dropdown-item[data-action="remote-control"],
+.tiny-remoter-dropdown-item[data-action="remote-url"] {
+  display: none;
+}
